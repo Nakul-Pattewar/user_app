@@ -23,7 +23,6 @@ class UserTile extends StatelessWidget {
         initials += nameParts[i][0].toUpperCase();
       }
     }
-
     return initials;
   }
 
@@ -113,8 +112,12 @@ class UserTile extends StatelessWidget {
             ),
             Expanded(
               flex: 2,
-              child:
-                  PopupOptionsButton(options: {'Edit': () {}, 'Delete': () {}}),
+              child: PopupOptionsButton(
+                options: {
+                  'Edit': () {},
+                  'Delete': () {},
+                },
+              ),
             )
           ],
         ));
