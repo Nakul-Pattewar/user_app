@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_dot.dart';
 
+import '../../../common/constants/enums.dart';
+
 class UserTile extends StatelessWidget {
   const UserTile(
       {super.key,
@@ -79,8 +81,8 @@ class UserTile extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
                           child: Icon(
-                              userGender == "male" ? Icons.male : Icons.female,
-                              color: userGender == "male"
+                              userGender == Gender.male.name ? Icons.male : Icons.female,
+                              color: userGender == Gender.male.name
                                   ? Colors.blueAccent
                                   : Colors.pinkAccent),
                         ),
