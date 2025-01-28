@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_dot.dart';
 
-import '../../../../common/constants/enums.dart';
-
 class UserTile extends StatelessWidget {
   const UserTile(
       {super.key,
-      required this.userGender,
-      required this.userName,
-      required this.userEmail,
-      required this.userStatus});
+        required this.userGender,
+        required this.userName,
+        required this.userEmail,
+        required this.userStatus});
   final String userName;
   final String userGender;
   final String userEmail;
@@ -25,6 +23,7 @@ class UserTile extends StatelessWidget {
         initials += nameParts[i][0].toUpperCase();
       }
     }
+
     return initials;
   }
 
@@ -36,11 +35,12 @@ class UserTile extends StatelessWidget {
         child: Row(
           children: [
             Expanded(
-              flex: 3,
-              child: Center(
+              flex: 4,
+              child: Container(
+                margin: EdgeInsets.only(right: 5),
                 child: Container(
-                  width: 40,
-                  height: 40,
+                  width: 60,
+                  height: 60,
                   decoration: BoxDecoration(
                     color: Colors.teal[100],
                     shape: BoxShape.circle,
@@ -50,7 +50,7 @@ class UserTile extends StatelessWidget {
                     getUserNameInitials(userName),
                     style: TextStyle(
                       color: Colors.black,
-                      fontSize: 20,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -78,16 +78,6 @@ class UserTile extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
-                          child: Icon(
-                              userGender == Gender.male.name
-                                  ? Icons.male
-                                  : Icons.female,
-                              color: userGender == Gender.male.name
-                                  ? Colors.blueAccent
-                                  : Colors.pinkAccent),
-                        ),
                       ],
                     ),
                     Row(
@@ -105,23 +95,34 @@ class UserTile extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
+                      ],
+                    ),
+                    Row(
+                      children: [
                         UserStatusDot(
                           userStatus: userStatus,
                         ),
                       ],
-                    ),
+                    )
                   ],
                 ),
               ),
             ),
             Expanded(
               flex: 2,
-              child: PopupOptionsButton(
-                options: {
-                  'Edit': () {},
-                  'Delete': () {},
-                },
-              ),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
+                child: Icon(
+                    size: 30,
+                    userGender == "male" ? Icons.male : Icons.female,
+                    color: userGender == "male"
+                        ? Colors.blueAccent
+                        : Colors.pinkAccent),
+              ),),
+            Expanded(
+              flex: 2,
+              child:
+              PopupOptionsButton(options: {'Edit': () {}, 'Delete': () {}}),
             )
           ],
         ));
