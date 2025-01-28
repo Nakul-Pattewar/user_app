@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:user_app/features/user/list/user_tile.dart';
 
 import '../../../common/constants/strings.dart';
+import '../user.dart';
 
 class UserList extends StatelessWidget {
   const UserList({super.key});
@@ -24,43 +29,50 @@ class UserList extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.white,
+        shadowColor: Colors.white,
+        surfaceTintColor: Colors.white,
       ),
       body: Column(
         children: [
           Container(
             height: size.height * 0.85,
             margin: EdgeInsets.all(5),
-            child: ListView(
-              children: [
-                UserTile(
-                  userName: 'Nakul Pattewar',
-                  userGender: 'male',
-                  userEmail: 'nakulpattewar@gmail.com',
-                  userStatus: 'active',
-                ),
-                UserTile(
-                  userName: 'Abc Def',
-                  userGender: 'female',
-                  userEmail: 'abc@yahoo.com',
-                  userStatus: 'inactive',
-                ),
-                UserTile(
-                  userName: 'Aditya RaoSaheb Dube Kylas',
-                  userGender: 'male',
-                  userEmail: 'rao@gmail.com',
-                  userStatus: 'inactive',
-                ),
-                UserTile(
-                  userName: 'Pqr Mno',
-                  userGender: 'female',
-                  userEmail: 'xyzjcbjhsvbshvbshvbjhbjbbf@gmail.com',
-                  userStatus: 'active',
-                ),
-              ],
+            child: FutureBuilder<List<User>>(
+              future: loadUsers(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text(usersListErrorMessage));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return Center(child: Text(noUsersTextMessage));
+                }
+                List<User> users = snapshot.data!;
+                return ListView.builder(
+                  itemCount: users.length,
+                  itemBuilder: (context, index) {
+                    return UserTile(
+                      userName: users[index].userName,
+                      userEmail: users[index].userEmail,
+                      userGender: users[index].userGender,
+                      userStatus: users[index].userStatus,
+                    );
+                  },
+                );
+              },
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<List<User>> loadUsers() async {
+    String jsonString = await rootBundle.loadString(usersListFilePath);
+
+    List<dynamic> jsonList = json.decode(jsonString);
+
+    List<User> users = jsonList.map((json) => User.fromJson(json)).toList();
+    return users;
   }
 }
