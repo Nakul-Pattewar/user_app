@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_dot.dart';
 
-import '../../../../common/constants/enums.dart';
-
 class UserTile extends StatelessWidget {
   const UserTile(
       {super.key,
@@ -25,6 +23,7 @@ class UserTile extends StatelessWidget {
         initials += nameParts[i][0].toUpperCase();
       }
     }
+
     return initials;
   }
 
@@ -81,10 +80,8 @@ class UserTile extends StatelessWidget {
                         Container(
                           padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
                           child: Icon(
-                              userGender == Gender.male.name
-                                  ? Icons.male
-                                  : Icons.female,
-                              color: userGender == Gender.male.name
+                              userGender == "male" ? Icons.male : Icons.female,
+                              color: userGender == "male"
                                   ? Colors.blueAccent
                                   : Colors.pinkAccent),
                         ),
@@ -116,12 +113,8 @@ class UserTile extends StatelessWidget {
             ),
             Expanded(
               flex: 2,
-              child: PopupOptionsButton(
-                options: {
-                  'Edit': () {},
-                  'Delete': () {},
-                },
-              ),
+              child:
+                  PopupOptionsButton(options: {'Edit': () {}, 'Delete': () {}}),
             )
           ],
         ));

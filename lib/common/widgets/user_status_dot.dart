@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/enums.dart';
-
 class UserStatusDot extends StatelessWidget {
   final String userStatus;
 
@@ -11,7 +9,7 @@ class UserStatusDot extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: userStatus == Status.active.name ? Colors.green[600] : Colors.red[600],
+        color: userStatus == 'active' ? Colors.green[600] : Colors.red[600],
         shape: BoxShape.circle,
       ),
       constraints: BoxConstraints(
