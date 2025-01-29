@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:user_app/features/error/error_page.dart';
-import 'package:user_app/features/user/list/user_list.dart';
+import 'package:user_app/features/error/ui/error_page.dart';
+import 'package:user_app/features/user/list/ui/user_list.dart';
 
 import '../common/constants/strings.dart';
 
