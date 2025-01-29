@@ -4,6 +4,7 @@ import 'package:user_app/common/constants/strings.dart';
 import 'package:http/http.dart' as http_client;
 
 class BaseApi {
+  final httpClient = http_client.Client();
   Uri getUri(String endpoint) {
     return Uri.parse('$gorestBaseUrl$endpoint');
   }
