@@ -39,22 +39,19 @@ class UserTile extends StatelessWidget {
           Expanded(
             flex: 4,
             child: Container(
-              margin: EdgeInsets.only(right: 5),
-              child: Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.teal[100],
-                  shape: BoxShape.circle,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  getUserNameInitials(userName),
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: Colors.teal[100],
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                getUserNameInitials(userName),
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -65,10 +62,9 @@ class UserTile extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child:  ConstrainedBox(
                         constraints: BoxConstraints(maxWidth: 230),
                         child: Text(
                           userName,
@@ -80,12 +76,10 @@ class UserTile extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child:  ConstrainedBox(
                         constraints: BoxConstraints(maxWidth: 230),
                         child: Text(
                           userEmail,
@@ -97,7 +91,6 @@ class UserTile extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ],
                   ),
                   UserStatusWidget(
                     userStatus: userStatus,
@@ -108,7 +101,7 @@ class UserTile extends StatelessWidget {
           ),
           Expanded(
             flex: 2,
-            child: Container(
+            child: Padding(
               padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
               child: Icon(
                   size: 30,
