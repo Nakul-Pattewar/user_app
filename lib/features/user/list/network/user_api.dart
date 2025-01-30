@@ -6,7 +6,6 @@ import 'package:user_app/features/user/list/network/user_response.dart';
 
 class UserApi extends BaseApi {
   Future<List<UserResponse>> getUsersList() async {
-
     final Uri uri = getUri(usersListEndpoint);
 
     final request = httpClient.get(uri);

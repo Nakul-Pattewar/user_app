@@ -5,7 +5,7 @@ import 'package:user_app/features/user/list/network/user_api.dart';
 import 'package:user_app/features/user/list/ui/user_tile.dart';
 
 import '../../../../common/constants/strings.dart';
-import '../bloc/user_state.dart';
+import '../../../../common/state/ui_state.dart';
 import '../network/user_response.dart';
 
 class UserList extends StatelessWidget {
@@ -39,86 +39,54 @@ class UserList extends StatelessWidget {
           Container(
             height: size.height * 0.85,
             margin: EdgeInsets.all(5),
-            child: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-              if(state is UserInitial){
-                return Center(child: Text("initial"));
-              } else if (state is UserLoading) {
-                return Center(child: CircularProgressIndicator());
-              } else if (state is UserLoaded) {
-                List<UserResponse> users = state.users;
-                return ListView.builder(
-                  itemCount: users.length,
-                  itemBuilder: (context, index) {
-                    return UserTile(
-                      userName: users[index].userName,
-                      userEmail: users[index].userEmail,
-                      userGender: users[index].userGender,
-                      userStatus: users[index].userStatus,
-                    );
-                  },
-                );
-              } else if (state is UserError) {
-                String errorMessage = unexpectedErrorMessage;
-                return Center(
-                  child: Text(
-                    errorMessage,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
+            child: BlocBuilder<UserCubit, UiState<List<UserResponse>>>(
+              builder: (context, state) {
+                if (state is Loading) {
+                  return Center(
+                    child: CircularProgressIndicator(
                       color: Colors.black,
-                      fontSize: 16,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                );
-              } else {
-                return Center(
-                  child: Text("noUsersTextMessage"),
-                );
-              }
-            }),
-
-            // FutureBuilder<List<UserResponse>>(
-            //   future: userApi.getUsersList(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return Center(
-                    child: CircularProgressIndicator(),
                   );
-            //     } else if (snapshot.hasError) {
-            //       String errorMessage = snapshot.error.toString();
-            //       return Center(
-            //         child: Text(
-            //           errorMessage,
-            //           textAlign: TextAlign.center,
-            //           style: TextStyle(
-            //             color: Colors.black,
-            //             fontSize: 16,
-            //           ),
-            //           maxLines: 2,
-            //           overflow: TextOverflow.ellipsis,
-            //         ),
-            //       );
-            //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            //       return Center(
-            //         child: Text(noUsersTextMessage),
-            //       );
-            //     } else {
-            //       List<UserResponse> users = snapshot.data!;
-            //       return ListView.builder(
-            //         itemCount: users.length,
-            //         itemBuilder: (context, index) {
-            //           return UserTile(
-            //             userName: users[index].userName,
-            //             userEmail: users[index].userEmail,
-            //             userGender: users[index].userGender,
-            //             userStatus: users[index].userStatus,
-            //           );
-            //         },
-            //       );
-            //     }
-            //   },
-            // ),
+                } else if (state is Success) {
+                  List<UserResponse> users = (state as Success).getData;
+                  if (users.isEmpty) {
+                    return Center(
+                      child: Text(noUsersTextMessage),
+                    );
+                  } else {
+                    return ListView.builder(
+                      itemCount: users.length,
+                      itemBuilder: (context, index) {
+                        return UserTile(
+                          userName: users[index].userName,
+                          userEmail: users[index].userEmail,
+                          userGender: users[index].userGender,
+                          userStatus: users[index].userStatus,
+                        );
+                      },
+                    );
+                  }
+                } else if (state is Error) {
+                  String errorMessage = (state as Error).getError.toString();
+                  return Center(
+                    child: Text(
+                      errorMessage,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  );
+                } else {
+                  return Center(
+                    child: Text(unexpectedErrorMessage),
+                  );
+                }
+              },
+            ),
           ),
         ],
       ),

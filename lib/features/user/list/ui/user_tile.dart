@@ -11,6 +11,7 @@ class UserTile extends StatelessWidget {
       required this.userName,
       required this.userEmail,
       required this.userStatus});
+
   final String userName;
   final String userGender;
   final String userEmail;
@@ -58,39 +59,40 @@ class UserTile extends StatelessWidget {
           ),
           Expanded(
             flex: 15,
-            child: SizedBox(
+            child: Padding(
+              padding: EdgeInsets.only(left: 5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Align(
                     alignment: Alignment.centerLeft,
-                    child:  ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: 230),
-                        child: Text(
-                          userName,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 230),
+                      child: Text(
+                        userName,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
+                    ),
                   ),
                   Align(
                     alignment: Alignment.centerLeft,
-                    child:  ConstrainedBox(
-                        constraints: BoxConstraints(maxWidth: 230),
-                        child: Text(
-                          userEmail,
-                          style: TextStyle(
-                            color: Colors.grey[700],
-                            fontSize: 14,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 230),
+                      child: Text(
+                        userEmail,
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 14,
                         ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
+                    ),
                   ),
                   UserStatusWidget(
                     userStatus: userStatus,
