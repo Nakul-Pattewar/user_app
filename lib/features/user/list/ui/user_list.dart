@@ -40,7 +40,9 @@ class UserList extends StatelessWidget {
               future: userApi.getUsersList(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 } else if (snapshot.hasError) {
                   String errorMessage = snapshot.error.toString();
                   return Center(
