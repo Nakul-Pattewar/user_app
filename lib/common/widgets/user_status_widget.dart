@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../constants/enums.dart';
 
-class UserStatusDot extends StatelessWidget {
+class UserStatusWidget extends StatelessWidget {
   final String userStatus;
 
-  const UserStatusDot({super.key, required this.userStatus});
+  const UserStatusWidget({super.key, required this.userStatus});
 
   @override
   Widget build(BuildContext context) {
