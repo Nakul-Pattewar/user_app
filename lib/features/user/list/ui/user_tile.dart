@@ -3,6 +3,7 @@ import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_widget.dart';
 
 import '../../../../common/constants/enums.dart';
+import '../../edit/ui/edit_user_dialog.dart';
 
 class UserTile extends StatelessWidget {
   const UserTile(
@@ -28,6 +29,19 @@ class UserTile extends StatelessWidget {
     }
 
     return initials;
+  }
+
+  void showEditDialog(BuildContext context, String name, String email,
+      String gender, String status) {
+    showDialog(
+      context: context,
+      builder: (context) => EditUserDialog(
+        name: name,
+        email: email,
+        selectedGender: gender,
+        selectedStatus: status,
+      ),
+    );
   }
 
   @override
@@ -117,7 +131,10 @@ class UserTile extends StatelessWidget {
             flex: 2,
             child: PopupOptionsButton(
               options: {
-                PopupOptions.edit.name: () {},
+                PopupOptions.edit.name: () {
+                  showEditDialog(
+                      context, userName, userEmail, userGender, userStatus);
+                },
                 PopupOptions.delete.name: () {},
               },
             ),
