@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/enums.dart';
 
 class UserStatusWidget extends StatelessWidget {
-  final String userStatus;
+  final Status userStatus;
 
   const UserStatusWidget({super.key, required this.userStatus});
 
@@ -13,7 +13,9 @@ class UserStatusWidget extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            color: userStatus == Status.active.name ? Colors.green[600] : Colors.red[600],
+            color: userStatus == Status.active
+                ? Colors.green[600]
+                : Colors.red[600],
             shape: BoxShape.circle,
           ),
           constraints: BoxConstraints(
@@ -25,7 +27,7 @@ class UserStatusWidget extends StatelessWidget {
         Container(
           constraints: BoxConstraints(maxWidth: 230),
           child: Text(
-            userStatus,
+            userStatus.name,
             style: TextStyle(
               color: Colors.grey[700],
               fontSize: 14,

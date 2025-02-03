@@ -10,3 +10,14 @@ const String serverErrorMessage = 'Server Error';
 const String unexpectedErrorMessage = 'Unexpected Error';
 const String noInternetErrorMessage =
     'No internet connection. Please check your connection and try again.';
+const String editUserDialogTitle = 'Edit User';
+const String editUserDialogNameTextFieldTitle = 'Name';
+const String editUserDialogEmailTextFieldTitle = 'Email';
+const String editUserDialogGenderLabel = 'Gender';
+const String editUserDialogStatusLabel = 'Status';
+const String editUserDialogCancelButtonText = 'Cancel';
+const String editUserDialogSaveAndCloseButtonText = 'Save & Close';
+const String maleGender = 'male';
+const String femaleGender = 'female';
+const String activeStatus = 'active';
+const String inactiveStatus = 'inactive';
