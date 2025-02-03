@@ -4,10 +4,11 @@ import 'package:user_app/common/constants/enums.dart';
 import '../../features/user/edit/ui/edit_user_dialog.dart';
 import '../../features/user/list/network/user_response.dart';
 
-void showCustomDialog(
-    {required DialogAction action,
-    required BuildContext context,
-    required UserResponse user}) {
+void showCustomDialog({
+  required DialogAction action,
+  required BuildContext context,
+  required UserResponse user,
+}) {
   switch (action) {
     case DialogAction.edit:
       showDialog(

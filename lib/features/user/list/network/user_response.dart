@@ -16,8 +16,8 @@ class UserResponse {
       : userId = json['id'] as int,
         userName = json['name'] as String,
         userEmail = json['email'] as String,
-        userGender = (json['gender'] as String).toLowerCase().toGender(),
-        userStatus = (json['status'] as String).toLowerCase().toStatus();
+        userGender = (json['gender'] as String).toGender(),
+        userStatus = (json['status'] as String).toStatus();
 
   Map<String, dynamic> toJson() => {
         'id': userId,

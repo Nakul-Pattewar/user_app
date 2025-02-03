@@ -23,10 +23,11 @@ class EditUserDialogState extends State<EditUserDialog> {
   late TextEditingController emailController =
       TextEditingController(text: widget.user.userEmail);
 
-  Widget _editUserDialogTextField(
-      {required TextEditingController controller,
-      required String title,
-      required TextInputType keyboardType}) {
+  Widget _EditUserDialogTextField({
+    required TextEditingController controller,
+    required String title,
+    required TextInputType keyboardType,
+  }) {
     return TextField(
       controller: controller,
       decoration: InputDecoration(labelText: title),
@@ -34,14 +35,19 @@ class EditUserDialogState extends State<EditUserDialog> {
     );
   }
 
-  Widget _radioListWidget<T extends Enum>(
-      {required String label, required List<T> values, required T groupValue}) {
+  Widget _RadioListWidget<T extends Enum>({
+    required String label,
+    required List<T> values,
+    required T groupValue,
+  }) {
     return Column(children: [
       Align(
         alignment: Alignment.centerLeft,
         child: Text(
           label,
-          style: TextStyle(fontSize: 12),
+          style: TextStyle(
+            fontSize: 12,
+          ),
         ),
       ),
       Row(
@@ -50,7 +56,9 @@ class EditUserDialogState extends State<EditUserDialog> {
             child: RadioListTile<T>(
               title: Text(
                 g.name,
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(
+                  fontSize: 16,
+                ),
               ),
               contentPadding: EdgeInsets.zero,
               value: g,
@@ -74,32 +82,38 @@ class EditUserDialogState extends State<EditUserDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(editUserDialogTitle),
+      title: Text(
+        editUserDialogTitle,
+      ),
       backgroundColor: Colors.white,
       content: SizedBox(
         width: 300,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _editUserDialogTextField(
-                controller: nameController,
-                title: editUserDialogNameTextFieldTitle,
-                keyboardType: TextInputType.name),
+            _EditUserDialogTextField(
+              controller: nameController,
+              title: editUserDialogNameTextFieldTitle,
+              keyboardType: TextInputType.name,
+            ),
             SizedBox(height: 10),
-            _editUserDialogTextField(
-                controller: emailController,
-                title: editUserDialogEmailTextFieldTitle,
-                keyboardType: TextInputType.emailAddress),
+            _EditUserDialogTextField(
+              controller: emailController,
+              title: editUserDialogEmailTextFieldTitle,
+              keyboardType: TextInputType.emailAddress,
+            ),
             SizedBox(height: 15),
-            _radioListWidget(
-                label: editUserDialogGenderLabel,
-                values: [Gender.male, Gender.female],
-                groupValue: gender),
+            _RadioListWidget(
+              label: editUserDialogGenderLabel,
+              values: [Gender.male, Gender.female],
+              groupValue: gender,
+            ),
             SizedBox(height: 10),
-            _radioListWidget(
-                label: editUserDialogStatusLabel,
-                values: [Status.active, Status.inactive],
-                groupValue: status)
+            _RadioListWidget(
+              label: editUserDialogStatusLabel,
+              values: [Status.active, Status.inactive],
+              groupValue: status,
+            ),
           ],
         ),
       ),
@@ -108,13 +122,17 @@ class EditUserDialogState extends State<EditUserDialog> {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(editUserDialogCancelButtonText),
+          child: Text(
+            editUserDialogCancelButtonText,
+          ),
         ),
         ElevatedButton(
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: Text(editUserDialogSaveAndCloseButtonText),
+          child: Text(
+            editUserDialogSaveAndCloseButtonText,
+          ),
         ),
       ],
     );

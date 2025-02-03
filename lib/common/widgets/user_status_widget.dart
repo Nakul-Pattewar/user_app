@@ -25,7 +25,9 @@ class UserStatusWidget extends StatelessWidget {
           margin: EdgeInsets.fromLTRB(1, 5, 5, 5),
         ),
         Container(
-          constraints: BoxConstraints(maxWidth: 230),
+          constraints: BoxConstraints(
+            maxWidth: 230,
+          ),
           child: Text(
             userStatus.name,
             style: TextStyle(

@@ -5,24 +5,15 @@ import 'package:user_app/common/widgets/user_status_widget.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 
 import '../../../../common/constants/enums.dart';
+import '../../../../common/utils/utils.dart';
 
 class UserTile extends StatelessWidget {
-  const UserTile({super.key, required this.user});
+  const UserTile({
+    super.key,
+    required this.user,
+  });
 
   final UserResponse user;
-
-  String getUserNameInitials(String name) {
-    List<String> nameParts = name.trim().split(' ');
-    String initials = '';
-
-    for (int i = 0; i < nameParts.length && i < 2; i++) {
-      if (nameParts[i].isNotEmpty) {
-        initials += nameParts[i][0].toUpperCase();
-      }
-    }
-
-    return initials;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,15 +102,19 @@ class UserTile extends StatelessWidget {
             flex: 2,
             child: PopupOptionsButton(
               options: {
-                DialogAction.edit.name: () {
+                DialogAction.edit: () {
                   showCustomDialog(
-                      action: DialogAction.edit, context: context, user: user);
+                    action: DialogAction.edit,
+                    context: context,
+                    user: user,
+                  );
                 },
-                DialogAction.delete.name: () {
+                DialogAction.delete: () {
                   showCustomDialog(
-                      action: DialogAction.delete,
-                      context: context,
-                      user: user);
+                    action: DialogAction.delete,
+                    context: context,
+                    user: user,
+                  );
                 },
               },
             ),
