@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:user_app/common/constants/strings.dart';
 import 'package:user_app/common/utils/show_custom_dialog.dart';
 import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_widget.dart';
@@ -102,10 +101,8 @@ class UserTile extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
               child: Icon(
                   size: 30,
-                  user.userGender == Gender.male.name
-                      ? Icons.male
-                      : Icons.female,
-                  color: user.userGender == Gender.male.name
+                  user.userGender == Gender.male ? Icons.male : Icons.female,
+                  color: user.userGender == Gender.male
                       ? Colors.blueAccent
                       : Colors.pinkAccent),
             ),
@@ -114,11 +111,11 @@ class UserTile extends StatelessWidget {
             flex: 2,
             child: PopupOptionsButton(
               options: {
-                PopupOptions.edit.name: () {
+                DialogAction.edit.name: () {
                   showCustomDialog(
                       action: DialogAction.edit, context: context, user: user);
                 },
-                PopupOptions.delete.name: () {
+                DialogAction.delete.name: () {
                   showCustomDialog(
                       action: DialogAction.delete,
                       context: context,

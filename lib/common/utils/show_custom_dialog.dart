@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:user_app/common/constants/enums.dart';
-import 'package:user_app/common/constants/strings.dart';
 
 import '../../features/user/edit/ui/edit_user_dialog.dart';
 import '../../features/user/list/network/user_response.dart';

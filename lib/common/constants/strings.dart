@@ -17,3 +17,7 @@ const String editUserDialogGenderLabel = 'Gender';
 const String editUserDialogStatusLabel = 'Status';
 const String editUserDialogCancelButtonText = 'Cancel';
 const String editUserDialogSaveAndCloseButtonText = 'Save & Close';
+const String maleGender = 'male';
+const String femaleGender = 'female';
+const String activeStatus = 'active';
+const String inactiveStatus = 'inactive';

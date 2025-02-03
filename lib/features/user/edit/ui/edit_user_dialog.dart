@@ -16,8 +16,8 @@ class EditUserDialog extends StatefulWidget {
 }
 
 class EditUserDialogState extends State<EditUserDialog> {
-  late String gender = widget.user.userGender;
-  late String status = widget.user.userStatus;
+  late Gender gender = widget.user.userGender;
+  late Status status = widget.user.userStatus;
   late TextEditingController nameController =
       TextEditingController(text: widget.user.userName);
   late TextEditingController emailController =
@@ -35,9 +35,7 @@ class EditUserDialogState extends State<EditUserDialog> {
   }
 
   Widget _radioListWidget<T extends Enum>(
-      {required String label,
-      required List<T> values,
-      required String groupValue}) {
+      {required String label, required List<T> values, required T groupValue}) {
     return Column(children: [
       Align(
         alignment: Alignment.centerLeft,
@@ -49,20 +47,20 @@ class EditUserDialogState extends State<EditUserDialog> {
       Row(
         children: values.map((T g) {
           return Expanded(
-            child: RadioListTile<String>(
+            child: RadioListTile<T>(
               title: Text(
                 g.name,
                 style: TextStyle(fontSize: 16),
               ),
               contentPadding: EdgeInsets.zero,
-              value: g.name,
+              value: g,
               groupValue: groupValue,
-              onChanged: (String? value) {
+              onChanged: (T? value) {
                 setState(() {
                   if (label == editUserDialogStatusLabel) {
-                    status = value!;
+                    status = value! as Status;
                   } else {
-                    gender = value!;
+                    gender = value! as Gender;
                   }
                 });
               },
@@ -95,12 +93,12 @@ class EditUserDialogState extends State<EditUserDialog> {
             SizedBox(height: 15),
             _radioListWidget(
                 label: editUserDialogGenderLabel,
-                values: Gender.values,
+                values: [Gender.male, Gender.female],
                 groupValue: gender),
             SizedBox(height: 10),
             _radioListWidget(
                 label: editUserDialogStatusLabel,
-                values: Status.values,
+                values: [Status.active, Status.inactive],
                 groupValue: status)
           ],
         ),
