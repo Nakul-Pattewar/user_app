@@ -54,10 +54,7 @@ class UserList extends StatelessWidget {
                 itemCount: users.length,
                 itemBuilder: (context, index) {
                   return UserTile(
-                    userName: users[index].userName,
-                    userEmail: users[index].userEmail,
-                    userGender: users[index].userGender,
-                    userStatus: users[index].userStatus,
+                    user: users[index],
                   );
                 },
               );

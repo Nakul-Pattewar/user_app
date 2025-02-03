@@ -1,3 +1,5 @@
+import '../../../../common/constants/enums.dart';
+
 class UserResponse {
   final int userId;
   final String userName;

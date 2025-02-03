@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:user_app/features/user/list/network/user_response.dart';
 import '../../../../common/constants/enums.dart';
 import '../../../../common/constants/strings.dart';
 
 class EditUserDialog extends StatefulWidget {
-  final String name;
-  final String email;
-  final String selectedGender;
-  final String selectedStatus;
+  final UserResponse user;
 
   const EditUserDialog({
     super.key,
-    required this.name,
-    required this.email,
-    required this.selectedGender,
-    required this.selectedStatus,
+    required this.user,
   });
 
   @override
@@ -21,12 +16,62 @@ class EditUserDialog extends StatefulWidget {
 }
 
 class EditUserDialogState extends State<EditUserDialog> {
-  late String gender = widget.selectedGender;
-  late String status = widget.selectedStatus;
+  late String gender = widget.user.userGender;
+  late String status = widget.user.userStatus;
   late TextEditingController nameController =
-      TextEditingController(text: widget.name);
+      TextEditingController(text: widget.user.userName);
   late TextEditingController emailController =
-      TextEditingController(text: widget.email);
+      TextEditingController(text: widget.user.userEmail);
+
+  Widget _editUserDialogTextField(
+      {required TextEditingController controller,
+      required String title,
+      required TextInputType keyboardType}) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(labelText: title),
+      keyboardType: keyboardType,
+    );
+  }
+
+  Widget _radioListWidget<T extends Enum>(
+      {required String label,
+      required List<T> values,
+      required String groupValue}) {
+    return Column(children: [
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          label,
+          style: TextStyle(fontSize: 12),
+        ),
+      ),
+      Row(
+        children: values.map((T g) {
+          return Expanded(
+            child: RadioListTile<String>(
+              title: Text(
+                g.name,
+                style: TextStyle(fontSize: 16),
+              ),
+              contentPadding: EdgeInsets.zero,
+              value: g.name,
+              groupValue: groupValue,
+              onChanged: (String? value) {
+                setState(() {
+                  if (label == editUserDialogStatusLabel) {
+                    status = value!;
+                  } else {
+                    gender = value!;
+                  }
+                });
+              },
+            ),
+          );
+        }).toList(),
+      ),
+    ]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,75 +83,25 @@ class EditUserDialogState extends State<EditUserDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextField(
-              controller: nameController,
-              decoration:
-                  InputDecoration(labelText: editUserDialogNameTextFieldTitle),
-              keyboardType: TextInputType.name,
-            ),
+            _editUserDialogTextField(
+                controller: nameController,
+                title: editUserDialogNameTextFieldTitle,
+                keyboardType: TextInputType.name),
             SizedBox(height: 10),
-            TextField(
-              controller: emailController,
-              decoration:
-                  InputDecoration(labelText: editUserDialogEmailTextFieldTitle),
-              keyboardType: TextInputType.emailAddress,
-            ),
+            _editUserDialogTextField(
+                controller: emailController,
+                title: editUserDialogEmailTextFieldTitle,
+                keyboardType: TextInputType.emailAddress),
             SizedBox(height: 15),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                editUserDialogGenderLabel,
-                style: TextStyle(fontSize: 12),
-              ),
-            ),
-            Row(
-              children: Gender.values.map((Gender g) {
-                return Expanded(
-                  child: RadioListTile<String>(
-                    title: Text(
-                      g.name,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    contentPadding: EdgeInsets.zero,
-                    value: g.name,
-                    groupValue: gender,
-                    onChanged: (String? value) {
-                      setState(() {
-                        gender = value!;
-                      });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
+            _radioListWidget(
+                label: editUserDialogGenderLabel,
+                values: Gender.values,
+                groupValue: gender),
             SizedBox(height: 10),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                editUserDialogStatusLabel,
-                style: TextStyle(fontSize: 12),
-              ),
-            ),
-            Row(
-              children: Status.values.map((Status s) {
-                return Expanded(
-                  child: RadioListTile<String>(
-                    title: Text(
-                      s.name,
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    contentPadding: EdgeInsets.zero,
-                    value: s.name,
-                    groupValue: status,
-                    onChanged: (String? value) {
-                      setState(() {
-                        status = value!;
-                      });
-                    },
-                  ),
-                );
-              }).toList(),
-            ),
+            _radioListWidget(
+                label: editUserDialogStatusLabel,
+                values: Status.values,
+                groupValue: status)
           ],
         ),
       ),
