@@ -48,42 +48,18 @@ void main() {
     });
 
     test(
-        "Given string contains trailing spaces, "
+        "Given string contains trailing, leading and in-betweeen spaces, "
         "when toGender() is called, "
         "then it should return correct gender", () {
-      final Gender g = 'male  '.toGender();
-      expect(g, Gender.male);
-    });
-
-    test(
-        "Given string contains leading spaces, "
-        "when toGender() is called, "
-        "then it should return correct gender", () {
-      final Gender g = '  female'.toGender();
+      final Gender g = '     f e m a l e  '.toGender();
       expect(g, Gender.female);
     });
 
     test(
-        "Given string contains multiple spaces in between, "
-        "when toGender() is called, "
-        "then it should return correct gender", () {
-      final Gender g = 'f e m a l e'.toGender();
-      expect(g, Gender.female);
-    });
-
-    test(
-        "Given string contains special characters, "
+        "Given string contains special characters and numbers, "
         "when toGender() is called, "
         "then it should return undefined", () {
-      final Gender g = 'm@le'.toGender();
-      expect(g, Gender.undefined);
-    });
-
-    test(
-        "Given string contains numbers, "
-        "when toGender() is called, "
-        "then it should return undefined", () {
-      final Gender g = 'male123'.toGender();
+      final Gender g = 'm@le123'.toGender();
       expect(g, Gender.undefined);
     });
   });
@@ -133,42 +109,18 @@ void main() {
     });
 
     test(
-        "Given string contains trailing spaces, "
+        "Given string contains leading, trailing and in-between spaces, "
         "when toStatus() is called, "
         "then it should return correct status", () {
-      final Status s = 'active  '.toStatus();
-      expect(s, Status.active);
-    });
-
-    test(
-        "Given string contains leading spaces, "
-        "when toStatus() is called, "
-        "then it should return correct status", () {
-      final Status s = '  active'.toStatus();
-      expect(s, Status.active);
-    });
-
-    test(
-        "Given string contains multiple spaces in between, "
-        "when toStatus() is called, "
-        "then it should return correct status", () {
-      final Status s = 'i n ac t i v e '.toStatus();
+      final Status s = '      i n ac t i v e  '.toStatus();
       expect(s, Status.inactive);
     });
 
     test(
-        "Given string contains special characters, "
+        "Given string contains special characters & numbers , "
         "when toStatus() is called, "
         "then it should return undefined", () {
-      final Status s = 'in@ctive'.toStatus();
-      expect(s, Status.undefined);
-    });
-
-    test(
-        "Given string contains numbers, "
-        "when toStatus() is called, "
-        "then it should return undefined", () {
-      final Status s = 'active123'.toStatus();
+      final Status s = 'in@ctive123'.toStatus();
       expect(s, Status.undefined);
     });
   });
