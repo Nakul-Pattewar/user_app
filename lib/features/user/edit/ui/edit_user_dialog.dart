@@ -23,62 +23,6 @@ class EditUserDialogState extends State<EditUserDialog> {
   late TextEditingController emailController =
       TextEditingController(text: widget.user.userEmail);
 
-  Widget _EditUserDialogTextField({
-    required TextEditingController controller,
-    required String title,
-    required TextInputType keyboardType,
-  }) {
-    return TextField(
-      controller: controller,
-      decoration: InputDecoration(labelText: title),
-      keyboardType: keyboardType,
-    );
-  }
-
-  Widget _RadioListWidget<T extends Enum>({
-    required String label,
-    required List<T> values,
-    required T groupValue,
-  }) {
-    return Column(children: [
-      Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          label,
-          style: TextStyle(
-            fontSize: 12,
-          ),
-        ),
-      ),
-      Row(
-        children: values.map((T g) {
-          return Expanded(
-            child: RadioListTile<T>(
-              title: Text(
-                g.name,
-                style: TextStyle(
-                  fontSize: 16,
-                ),
-              ),
-              contentPadding: EdgeInsets.zero,
-              value: g,
-              groupValue: groupValue,
-              onChanged: (T? value) {
-                setState(() {
-                  if (label == editUserDialogStatusLabel) {
-                    status = value! as Status;
-                  } else {
-                    gender = value! as Gender;
-                  }
-                });
-              },
-            ),
-          );
-        }).toList(),
-      ),
-    ]);
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -107,12 +51,22 @@ class EditUserDialogState extends State<EditUserDialog> {
               label: editUserDialogGenderLabel,
               values: [Gender.male, Gender.female],
               groupValue: gender,
+              onChanged: (Gender? value) {
+                setState(() {
+                  gender = value!;
+                });
+              },
             ),
             SizedBox(height: 10),
             _RadioListWidget(
               label: editUserDialogStatusLabel,
               values: [Status.active, Status.inactive],
               groupValue: status,
+              onChanged: (Status? value) {
+                setState(() {
+                  status = value!;
+                });
+              },
             ),
           ],
         ),
@@ -136,5 +90,74 @@ class EditUserDialogState extends State<EditUserDialog> {
         ),
       ],
     );
+  }
+}
+
+class _EditUserDialogTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final String title;
+  final TextInputType keyboardType;
+
+  const _EditUserDialogTextField({
+    required this.controller,
+    required this.title,
+    required this.keyboardType,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      decoration: InputDecoration(labelText: title),
+      keyboardType: keyboardType,
+    );
+  }
+}
+
+class _RadioListWidget<T extends Enum> extends StatelessWidget {
+  final String label;
+  final List<T> values;
+  final T groupValue;
+  final ValueChanged<T?> onChanged;
+
+  const _RadioListWidget({
+    super.key,
+    required this.values,
+    required this.groupValue,
+    required this.label,
+    required this.onChanged,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+      Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+          ),
+        ),
+      ),
+      Row(
+        children: values.map((T g) {
+          return Expanded(
+            child: RadioListTile<T>(
+              title: Text(
+                g.name,
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              contentPadding: EdgeInsets.zero,
+              value: g,
+              groupValue: groupValue,
+              onChanged: onChanged,
+            ),
+          );
+        }).toList(),
+      ),
+    ]);
   }
 }

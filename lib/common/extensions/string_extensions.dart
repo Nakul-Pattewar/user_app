@@ -4,7 +4,8 @@ import '../constants/enums.dart';
 
 extension GenderParser on String {
   Gender toGender() {
-    switch (replaceAll(' ', '').toLowerCase()) {
+    String gender = replaceAll(' ', '').toLowerCase();
+    switch (gender) {
       case (maleGender):
         return Gender.male;
       case (femaleGender):
@@ -17,7 +18,8 @@ extension GenderParser on String {
 
 extension StatusParser on String {
   Status toStatus() {
-    switch (replaceAll(' ', '').toLowerCase()) {
+    String status = replaceAll(' ', '').toLowerCase();
+    switch (status) {
       case (activeStatus):
         return Status.active;
       case (inactiveStatus):
