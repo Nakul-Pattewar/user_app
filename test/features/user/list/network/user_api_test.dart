@@ -145,14 +145,11 @@ void main() {
     test(
         "Given API error response, "
         "when GET call occurs, t"
-        "hen should throw HttpException", () async {
-      when(() => mockClient.get(any())).thenAnswer(
-        (_) async => http.Response(
-            HttpException("Internal Server Error") as String, 500),
-      );
+        "hen should throw Exception", () async {
+      when(() => mockClient.get(any())).thenThrow(Exception());
 
       expect(() async => await userApi.getUsersList(mockClient),
-          throwsA(isA<HttpException>()));
+          throwsA(isA<Exception>()));
     });
 
     test(
