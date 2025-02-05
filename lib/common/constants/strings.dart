@@ -21,3 +21,5 @@ const String maleGender = 'male';
 const String femaleGender = 'female';
 const String activeStatus = 'active';
 const String inactiveStatus = 'inactive';
+const String userDialogEditOptionText = 'edit';
+const String userDialogDeleteOptionText = 'delete';
