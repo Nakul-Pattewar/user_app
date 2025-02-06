@@ -4,7 +4,12 @@ import 'package:user_app/common/constants/strings.dart';
 import 'package:http/http.dart' as http_client;
 
 class BaseApi {
-  final httpClient = http_client.Client();
+  late http_client.Client client;
+
+  BaseApi({http_client.Client? client}) {
+    this.client = client ?? http_client.Client();
+  }
+
   Uri getUri(String endpoint) {
     return Uri.parse('$gorestBaseUrl$endpoint');
   }

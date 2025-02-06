@@ -15,7 +15,7 @@ class UserCubit extends Cubit<UiState<List<UserResponse>>> {
   FutureOr<void> fetchUsers() async {
     emit(Loading());
     try {
-      final users = await UserApi().getUsersList(http.Client());
+      final users = await UserApi().getUsersList();
       emit(Success<List<UserResponse>>(users));
     } catch (e) {
       emit(Error(Exception(e)));

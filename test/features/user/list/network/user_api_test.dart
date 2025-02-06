@@ -16,7 +16,7 @@ void main() {
   setUpAll(() async {
     registerFallbackValue(Uri());
     mockClient = MockClient();
-    userApi = UserApi();
+    userApi = UserApi(client: mockClient);
     json = jsonEncode([
       {
         "id": 7646618,
@@ -114,7 +114,7 @@ void main() {
         (_) async => http.Response(json, 200),
       );
 
-      final userList = await userApi.getUsersList(mockClient);
+      final userList = await userApi.getUsersList();
       expect(userList.length, 12);
     });
 
@@ -126,7 +126,7 @@ void main() {
         (_) async => http.Response(jsonEncode([]).toString(), 200),
       );
 
-      final userList = await userApi.getUsersList(mockClient);
+      final userList = await userApi.getUsersList();
       expect(userList, []);
     });
 
@@ -138,18 +138,17 @@ void main() {
         (_) async => http.Response("{manipulated_json}", 200),
       );
 
-      expect(() async => await userApi.getUsersList(mockClient),
-          throwsFormatException);
+      expect(() async => await userApi.getUsersList(), throwsFormatException);
     });
 
     test(
         "Given API error response, "
-        "when GET call occurs, t"
-        "hen should throw Exception", () async {
+        "when GET call occurs, "
+        "then should throw Exception", () async {
       when(() => mockClient.get(any())).thenThrow(Exception());
 
-      expect(() async => await userApi.getUsersList(mockClient),
-          throwsA(isA<Exception>()));
+      expect(
+          () async => await userApi.getUsersList(), throwsA(isA<Exception>()));
     });
 
     test(
@@ -160,8 +159,7 @@ void main() {
         (_) async => http.Response("", 200),
       );
 
-      expect(() async => await userApi.getUsersList(mockClient),
-          throwsFormatException);
+      expect(() async => await userApi.getUsersList(), throwsFormatException);
     });
 
     test(
@@ -182,8 +180,8 @@ void main() {
         (_) async => http.Response(invalidJson, 200),
       );
 
-      expect(() async => await userApi.getUsersList(mockClient),
-          throwsA(isA<TypeError>()));
+      expect(
+          () async => await userApi.getUsersList(), throwsA(isA<TypeError>()));
     });
   });
 }

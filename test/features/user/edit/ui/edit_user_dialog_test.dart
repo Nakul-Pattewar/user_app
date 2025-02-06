@@ -4,6 +4,28 @@ import 'package:user_app/common/constants/enums.dart';
 import 'package:user_app/features/user/edit/ui/edit_user_dialog.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 
+Future<void> _BuildDialog(
+    {required WidgetTester tester, required UserResponse mockUser}) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Scaffold(
+        body: Builder(
+          builder: (context) => ElevatedButton(
+            onPressed: () => showDialog(
+              context: context,
+              builder: (_) => EditUserDialog(user: mockUser),
+            ),
+            child: Text('Open Dialog'),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  await tester.tap(find.text('Open Dialog'));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   group('tests for Edit user dialog', () {
     late UserResponse mockUser;
@@ -18,32 +40,11 @@ void main() {
       );
     });
 
-    Future<void> _BuildDialog(WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: Builder(
-              builder: (context) => ElevatedButton(
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (_) => EditUserDialog(user: mockUser),
-                ),
-                child: Text('Open Dialog'),
-              ),
-            ),
-          ),
-        ),
-      );
-
-      await tester.tap(find.text('Open Dialog'));
-      await tester.pumpAndSettle();
-    }
-
     testWidgets(
         'Given mockUser, '
         'When User open edit dialog,'
         'Then should render widget correctly', (WidgetTester tester) async {
-      await _BuildDialog(tester);
+      await _BuildDialog(tester: tester, mockUser: mockUser);
 
       expect(find.text('Nakul Pattewar'), findsOneWidget);
       expect(find.text('abc@gmail.com'), findsOneWidget);
@@ -58,7 +59,7 @@ void main() {
         'When User tap on radio and elevated buttons in dialog, '
         'Then should tap correctly on buttons and update respective values correctly',
         (WidgetTester tester) async {
-      await _BuildDialog(tester);
+      await _BuildDialog(tester: tester, mockUser: mockUser);
 
       await tester.tap(find.text('female'));
       await tester.pumpAndSettle();
@@ -82,7 +83,7 @@ void main() {
         'Given mock user, '
         'When user clicks on cancel button, '
         'Should close the dialog', (WidgetTester tester) async {
-      await _BuildDialog(tester);
+      await _BuildDialog(tester: tester, mockUser: mockUser);
 
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
