@@ -83,4 +83,72 @@ void main() {
       expect(initial, "NP");
     });
   });
+
+  group('Tests for email validation', () {
+    test(
+        'Given an empty email, '
+        'when validateEmail is called, '
+        'then should return appropriate message', () {
+      final result = validateEmail("");
+      expect(result, "Email can't be empty");
+    });
+
+    test(
+        'Given an email without @ symbol, '
+        'when validateEmail is called, '
+        'then should return "Enter a valid email"', () {
+      final result = validateEmail("nakulpattewar.com");
+      expect(result, "Enter a valid email");
+    });
+
+    test(
+        'Given an email without domain, '
+        'when validateEmail is called, '
+        'then should return "Enter a valid email"', () {
+      final result = validateEmail("nakul@");
+      expect(result, "Enter a valid email");
+    });
+
+    test(
+        'Given a valid email, '
+        'when validateEmail is called, '
+        'then should return null', () {
+      final result = validateEmail("nakul.pattewar@example.com");
+      expect(result, null);
+    });
+
+    test(
+        'Given an email with spaces, '
+        'when validateEmail is called, '
+        'then should return "Enter a valid email"', () {
+      final result = validateEmail("nakul @example.com");
+      expect(result, "Enter a valid email");
+    });
+  });
+
+  group('Tests for name validation', () {
+    test(
+        'Given an empty name, '
+        'when validateName is called, '
+        'then should return "Name can\'t be empty"', () {
+      final result = validateName("");
+      expect(result, "Name can't be empty");
+    });
+
+    test(
+        'Given a valid name, '
+        'when validateName is called, '
+        'then should return null', () {
+      final result = validateName("Nakul Pattewar");
+      expect(result, null);
+    });
+
+    test(
+        'Given a name with leading/trailing spaces, '
+        'when validateName is called, '
+        'then should return null', () {
+      final result = validateName("  Nakul Pattewar  ");
+      expect(result, null);
+    });
+  });
 }
