@@ -9,15 +9,20 @@ class UserResponse {
   final String userEmail;
   final Status userStatus;
 
-  UserResponse(this.userName, this.userGender, this.userEmail, this.userStatus,
-      this.userId);
+  UserResponse({
+    required this.userName,
+    required this.userGender,
+    required this.userEmail,
+    required this.userStatus,
+    required this.userId,
+  });
 
   UserResponse.fromJson(Map<String, dynamic> json)
       : userId = json['id'] as int,
         userName = json['name'] as String,
         userEmail = json['email'] as String,
-        userGender = (json['gender'] as String).toLowerCase().toGender(),
-        userStatus = (json['status'] as String).toLowerCase().toStatus();
+        userGender = (json['gender'] as String).toGender(),
+        userStatus = (json['status'] as String).toStatus();
 
   Map<String, dynamic> toJson() => {
         'id': userId,
