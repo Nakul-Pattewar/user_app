@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_app/features/user/edit/bloc/edit_user_cubit.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 import '../../../../common/constants/enums.dart';
 import '../../../../common/constants/strings.dart';
+import '../../../../common/state/ui_state.dart';
 import '../../../../common/utils/utils.dart';
+import '../../list/bloc/user_cubit.dart';
 
 class EditUserDialog extends StatefulWidget {
   final UserResponse user;
@@ -27,12 +31,14 @@ class EditUserDialogState extends State<EditUserDialog> {
   bool _isNameValid = true;
 
   void _onEmailChanged(String value) {
+    widget.user.userEmail = value;
     setState(() {
       _isEmailValid = (validateEmail(value) == null);
     });
   }
 
   void _onNameChanged(String value) {
+    widget.user.userName = value;
     setState(() {
       _isNameValid = validateName(value) == null;
     });
@@ -40,78 +46,159 @@ class EditUserDialogState extends State<EditUserDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(
-        editUserDialogTitle,
-      ),
-      backgroundColor: Colors.white,
-      content: SizedBox(
-        width: 300,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _EditUserDialogTextField(
-              controller: nameController,
-              title: editUserDialogNameTextFieldTitle,
-              keyboardType: TextInputType.name,
-              onChanged: _onNameChanged,
-            ),
-            SizedBox(height: 10),
-            _EditUserDialogTextField(
-              controller: emailController,
-              title: editUserDialogEmailTextFieldTitle,
-              keyboardType: TextInputType.emailAddress,
-              onChanged: _onEmailChanged,
-            ),
-            SizedBox(height: 15),
-            _RadioListWidget(
-              label: editUserDialogGenderLabel,
-              values: [Gender.male, Gender.female],
-              groupValue: gender,
-              onChanged: (Gender? value) {
-                setState(
-                  () {
-                    gender = value!;
+    return BlocProvider(
+      create: (context) => EditUserCubit(),
+      child: BlocConsumer<EditUserCubit, UiState<bool>>(
+        builder: (context, state) {
+          if (state is Default || state is Loading || state is Error) {
+            return AlertDialog(
+              title: Text(
+                editUserDialogTitle,
+              ),
+              backgroundColor: Colors.white,
+              content: SizedBox(
+                width: 300,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _EditUserDialogTextField(
+                      controller: nameController,
+                      title: editUserDialogNameTextFieldTitle,
+                      keyboardType: TextInputType.name,
+                      onChanged: _onNameChanged,
+                    ),
+                    SizedBox(height: 10),
+                    _EditUserDialogTextField(
+                      controller: emailController,
+                      title: editUserDialogEmailTextFieldTitle,
+                      keyboardType: TextInputType.emailAddress,
+                      onChanged: _onEmailChanged,
+                    ),
+                    SizedBox(height: 15),
+                    _RadioListWidget(
+                      label: editUserDialogGenderLabel,
+                      values: [Gender.male, Gender.female],
+                      groupValue: gender,
+                      onChanged: (Gender? value) {
+                        if (value != null) {
+                          widget.user.userGender = value;
+                        }
+                        setState(
+                          () {
+                            gender = value!;
+                          },
+                        );
+                      },
+                    ),
+                    SizedBox(height: 10),
+                    _RadioListWidget(
+                      label: editUserDialogStatusLabel,
+                      values: [Status.active, Status.inactive],
+                      groupValue: status,
+                      onChanged: (Status? value) {
+                        if (value != null) widget.user.userStatus = value;
+                        setState(
+                          () {
+                            status = value!;
+                          },
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
                   },
-                );
-              },
-            ),
-            SizedBox(height: 10),
-            _RadioListWidget(
-              label: editUserDialogStatusLabel,
-              values: [Status.active, Status.inactive],
-              groupValue: status,
-              onChanged: (Status? value) {
-                setState(
-                  () {
-                    status = value!;
-                  },
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
+                  child: Text(
+                    editUserDialogCancelButtonText,
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: _isEmailValid && _isNameValid
+                      ? () async {
+                          await context
+                              .read<EditUserCubit>()
+                              .updateUser(widget.user);
+                        }
+                      : null,
+                  child: (state is Loading)
+                      ? CircularProgressIndicator()
+                      : Text(
+                          editUserDialogSaveAndCloseButtonText,
+                        ),
+                ),
+              ],
+            );
+          } else {
+            return SizedBox.shrink();
+          }
+        },
+        listener: (context, state) {
+          if (state is Error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Row(
+                  children: [
+                    Icon(Icons.error_outline, color: Colors.white),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        unexpectedErrorMessage,
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                backgroundColor: Colors.red.shade600,
+                behavior: SnackBarBehavior.floating,
+                margin: EdgeInsets.only(
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 16,
+                  left: 16,
+                  right: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
+          if (state is Success) {
             Navigator.of(context).pop();
-          },
-          child: Text(
-            editUserDialogCancelButtonText,
-          ),
-        ),
-        ElevatedButton(
-          onPressed: _isEmailValid && _isNameValid
-              ? () {
-                  Navigator.of(context).pop();
-                }
-              : null,
-          child: Text(
-            editUserDialogSaveAndCloseButtonText,
-          ),
-        ),
-      ],
+            context.read<UserCubit>().fetchUsers();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Row(
+                  children: [
+                    Icon(Icons.check_circle_outline, color: Colors.white),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        userUpdateSuccessMessage,
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+                backgroundColor: Colors.green.shade600,
+                behavior: SnackBarBehavior.floating,
+                margin: EdgeInsets.all(16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

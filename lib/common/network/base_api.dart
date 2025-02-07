@@ -14,6 +14,13 @@ class BaseApi {
     return Uri.parse('$gorestBaseUrl$endpoint');
   }
 
+  Map<String, String> getHeaders() {
+    return {
+      "Authorization": "Bearer $gorestApiAuthToken",
+      "Content-Type": "application/json"
+    };
+  }
+
   void _handleError(http_client.Response response) {
     switch (response.statusCode) {
       case (>= 400 && < 500):
