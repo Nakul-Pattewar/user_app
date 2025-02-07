@@ -26,13 +26,13 @@ class EditUserDialogState extends State<EditUserDialog> {
   bool _isEmailValid = true;
   bool _isNameValid = true;
 
-  void _OnEmailChanged(String value) {
+  void _onEmailChanged(String value) {
     setState(() {
-      _isEmailValid = validateEmail(value) == null;
+      _isEmailValid = (validateEmail(value) == null);
     });
   }
 
-  void _OnNameChanged(String value) {
+  void _onNameChanged(String value) {
     setState(() {
       _isNameValid = validateName(value) == null;
     });
@@ -54,14 +54,14 @@ class EditUserDialogState extends State<EditUserDialog> {
               controller: nameController,
               title: editUserDialogNameTextFieldTitle,
               keyboardType: TextInputType.name,
-              onChanged: _OnNameChanged,
+              onChanged: _onNameChanged,
             ),
             SizedBox(height: 10),
             _EditUserDialogTextField(
               controller: emailController,
               title: editUserDialogEmailTextFieldTitle,
               keyboardType: TextInputType.emailAddress,
-              onChanged: _OnEmailChanged,
+              onChanged: _onEmailChanged,
             ),
             SizedBox(height: 15),
             _RadioListWidget(
@@ -69,9 +69,11 @@ class EditUserDialogState extends State<EditUserDialog> {
               values: [Gender.male, Gender.female],
               groupValue: gender,
               onChanged: (Gender? value) {
-                setState(() {
-                  gender = value!;
-                });
+                setState(
+                  () {
+                    gender = value!;
+                  },
+                );
               },
             ),
             SizedBox(height: 10),
@@ -80,9 +82,11 @@ class EditUserDialogState extends State<EditUserDialog> {
               values: [Status.active, Status.inactive],
               groupValue: status,
               onChanged: (Status? value) {
-                setState(() {
-                  status = value!;
-                });
+                setState(
+                  () {
+                    status = value!;
+                  },
+                );
               },
             ),
           ],
@@ -116,16 +120,16 @@ class _EditUserDialogTextField extends StatelessWidget {
   final TextEditingController controller;
   final String title;
   final TextInputType keyboardType;
-  final void Function(String)? onChanged;
+  final void Function(String) onChanged;
 
   const _EditUserDialogTextField({
     required this.controller,
     required this.title,
     required this.keyboardType,
-    this.onChanged,
+    required this.onChanged,
   });
 
-  String? _GetTextFieldError(TextInputType keyboardType) {
+  String? _getTextFieldError(TextInputType keyboardType) {
     if (keyboardType == TextInputType.emailAddress) {
       return validateEmail(controller.text);
     } else if (keyboardType == TextInputType.name) {
@@ -140,13 +144,11 @@ class _EditUserDialogTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         labelText: title,
-        errorText: _GetTextFieldError(keyboardType),
+        errorText: _getTextFieldError(keyboardType),
       ),
       keyboardType: keyboardType,
       onChanged: (value) {
-        if (onChanged != null) {
-          onChanged!(value);
-        }
+        onChanged(value);
         (context as Element).markNeedsBuild();
       },
     );

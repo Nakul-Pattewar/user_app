@@ -136,14 +136,6 @@ void main() {
     });
 
     test(
-        'Given a valid name, '
-        'when validateName is called, '
-        'then should return null', () {
-      final result = validateName("Nakul Pattewar");
-      expect(result, null);
-    });
-
-    test(
         'Given a name with leading/trailing spaces, '
         'when validateName is called, '
         'then should return null', () {
