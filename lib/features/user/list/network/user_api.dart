@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 import 'package:user_app/common/constants/strings.dart';
 import 'package:user_app/common/network/base_api.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';

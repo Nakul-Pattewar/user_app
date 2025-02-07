@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 import '../../../../common/constants/enums.dart';
 import '../../../../common/constants/strings.dart';
+import '../../../../common/utils/utils.dart';
 
 class EditUserDialog extends StatefulWidget {
   final UserResponse user;
@@ -22,6 +23,20 @@ class EditUserDialogState extends State<EditUserDialog> {
       TextEditingController(text: widget.user.userName);
   late TextEditingController emailController =
       TextEditingController(text: widget.user.userEmail);
+  bool _isEmailValid = true;
+  bool _isNameValid = true;
+
+  void _onEmailChanged(String value) {
+    setState(() {
+      _isEmailValid = (validateEmail(value) == null);
+    });
+  }
+
+  void _onNameChanged(String value) {
+    setState(() {
+      _isNameValid = validateName(value) == null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +54,14 @@ class EditUserDialogState extends State<EditUserDialog> {
               controller: nameController,
               title: editUserDialogNameTextFieldTitle,
               keyboardType: TextInputType.name,
+              onChanged: _onNameChanged,
             ),
             SizedBox(height: 10),
             _EditUserDialogTextField(
               controller: emailController,
               title: editUserDialogEmailTextFieldTitle,
               keyboardType: TextInputType.emailAddress,
+              onChanged: _onEmailChanged,
             ),
             SizedBox(height: 15),
             _RadioListWidget(
@@ -52,9 +69,11 @@ class EditUserDialogState extends State<EditUserDialog> {
               values: [Gender.male, Gender.female],
               groupValue: gender,
               onChanged: (Gender? value) {
-                setState(() {
-                  gender = value!;
-                });
+                setState(
+                  () {
+                    gender = value!;
+                  },
+                );
               },
             ),
             SizedBox(height: 10),
@@ -63,9 +82,11 @@ class EditUserDialogState extends State<EditUserDialog> {
               values: [Status.active, Status.inactive],
               groupValue: status,
               onChanged: (Status? value) {
-                setState(() {
-                  status = value!;
-                });
+                setState(
+                  () {
+                    status = value!;
+                  },
+                );
               },
             ),
           ],
@@ -81,9 +102,11 @@ class EditUserDialogState extends State<EditUserDialog> {
           ),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: _isEmailValid && _isNameValid
+              ? () {
+                  Navigator.of(context).pop();
+                }
+              : null,
           child: Text(
             editUserDialogSaveAndCloseButtonText,
           ),
@@ -97,19 +120,37 @@ class _EditUserDialogTextField extends StatelessWidget {
   final TextEditingController controller;
   final String title;
   final TextInputType keyboardType;
+  final void Function(String) onChanged;
 
   const _EditUserDialogTextField({
     required this.controller,
     required this.title,
     required this.keyboardType,
+    required this.onChanged,
   });
+
+  String? _getTextFieldError(TextInputType keyboardType) {
+    if (keyboardType == TextInputType.emailAddress) {
+      return validateEmail(controller.text);
+    } else if (keyboardType == TextInputType.name) {
+      return validateName(controller.text);
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       controller: controller,
-      decoration: InputDecoration(labelText: title),
+      decoration: InputDecoration(
+        labelText: title,
+        errorText: _getTextFieldError(keyboardType),
+      ),
       keyboardType: keyboardType,
+      onChanged: (value) {
+        onChanged(value);
+        (context as Element).markNeedsBuild();
+      },
     );
   }
 }

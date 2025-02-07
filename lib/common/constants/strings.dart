@@ -23,3 +23,6 @@ const String activeStatus = 'active';
 const String inactiveStatus = 'inactive';
 const String userDialogEditOptionText = 'edit';
 const String userDialogDeleteOptionText = 'delete';
+const String emailInvalidErrorText = "Enter a valid email";
+const String emailEmptyErrorText = "Email can't be empty";
+const String nameEmptyErrorText = "Name can't be empty";
