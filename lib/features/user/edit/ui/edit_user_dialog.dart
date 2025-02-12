@@ -21,24 +21,23 @@ class EditUserDialog extends StatefulWidget {
 }
 
 class EditUserDialogState extends State<EditUserDialog> {
-  late Gender gender = widget.user.userGender;
-  late Status status = widget.user.userStatus;
+  late UserResponse user = widget.user;
   late TextEditingController nameController =
-      TextEditingController(text: widget.user.userName);
+      TextEditingController(text: user.userName);
   late TextEditingController emailController =
-      TextEditingController(text: widget.user.userEmail);
+      TextEditingController(text: user.userEmail);
   bool _isEmailValid = true;
   bool _isNameValid = true;
 
   void _onEmailChanged(String value) {
-    widget.user.userEmail = value;
+    user.userEmail = value;
     setState(() {
       _isEmailValid = (validateEmail(value) == null);
     });
   }
 
   void _onNameChanged(String value) {
-    widget.user.userName = value;
+    user.userName = value;
     setState(() {
       _isNameValid = validateName(value) == null;
     });
@@ -50,7 +49,9 @@ class EditUserDialogState extends State<EditUserDialog> {
       create: (context) => EditUserCubit(),
       child: BlocConsumer<EditUserCubit, UiState<bool>>(
         builder: (context, state) {
-          if (state is Default || state is Loading || state is Error) {
+          if (state is Success) {
+            return SizedBox.shrink();
+          } else {
             return AlertDialog(
               title: Text(
                 editUserDialogTitle,
@@ -78,14 +79,14 @@ class EditUserDialogState extends State<EditUserDialog> {
                     _RadioListWidget(
                       label: editUserDialogGenderLabel,
                       values: [Gender.male, Gender.female],
-                      groupValue: gender,
+                      groupValue: user.userGender,
                       onChanged: (Gender? value) {
                         if (value != null) {
-                          widget.user.userGender = value;
+                          user.userGender = value;
                         }
                         setState(
                           () {
-                            gender = value!;
+                            user.userGender = value!;
                           },
                         );
                       },
@@ -94,12 +95,12 @@ class EditUserDialogState extends State<EditUserDialog> {
                     _RadioListWidget(
                       label: editUserDialogStatusLabel,
                       values: [Status.active, Status.inactive],
-                      groupValue: status,
+                      groupValue: user.userStatus,
                       onChanged: (Status? value) {
-                        if (value != null) widget.user.userStatus = value;
+                        if (value != null) user.userStatus = value;
                         setState(
                           () {
-                            status = value!;
+                            user.userStatus = value!;
                           },
                         );
                       },
@@ -119,9 +120,7 @@ class EditUserDialogState extends State<EditUserDialog> {
                 ElevatedButton(
                   onPressed: _isEmailValid && _isNameValid
                       ? () async {
-                          await context
-                              .read<EditUserCubit>()
-                              .updateUser(widget.user);
+                          await context.read<EditUserCubit>().updateUser(user);
                         }
                       : null,
                   child: (state is Loading)
@@ -132,21 +131,29 @@ class EditUserDialogState extends State<EditUserDialog> {
                 ),
               ],
             );
-          } else {
-            return SizedBox.shrink();
           }
         },
         listener: (context, state) {
-          if (state is Error) {
+          if (state is Success) {
+            Navigator.of(context).pop();
+            context.read<UserCubit>().fetchUsers();
+          }
+          if (state is Error || state is Success) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Row(
                   children: [
-                    Icon(Icons.error_outline, color: Colors.white),
+                    Icon(
+                        (state is Error)
+                            ? Icons.error_outline
+                            : Icons.check_circle_outline,
+                        color: Colors.white),
                     SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        unexpectedErrorMessage,
+                        (state is Error)
+                            ? unexpectedErrorMessage
+                            : userUpdateSuccessMessage,
                         style: TextStyle(color: Colors.white, fontSize: 16),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -154,7 +161,9 @@ class EditUserDialogState extends State<EditUserDialog> {
                     ),
                   ],
                 ),
-                backgroundColor: Colors.red.shade600,
+                backgroundColor: (state is Error)
+                    ? Colors.red.shade600
+                    : Colors.green.shade600,
                 behavior: SnackBarBehavior.floating,
                 margin: EdgeInsets.only(
                   bottom: MediaQuery.of(context).viewInsets.bottom + 16,
@@ -165,35 +174,6 @@ class EditUserDialogState extends State<EditUserDialog> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 duration: Duration(seconds: 3),
-              ),
-            );
-          }
-          if (state is Success) {
-            Navigator.of(context).pop();
-            context.read<UserCubit>().fetchUsers();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Row(
-                  children: [
-                    Icon(Icons.check_circle_outline, color: Colors.white),
-                    SizedBox(width: 10),
-                    Expanded(
-                      child: Text(
-                        userUpdateSuccessMessage,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-                backgroundColor: Colors.green.shade600,
-                behavior: SnackBarBehavior.floating,
-                margin: EdgeInsets.all(16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                duration: Duration(seconds: 2),
               ),
             );
           }

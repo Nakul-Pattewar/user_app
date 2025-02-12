@@ -8,7 +8,7 @@ class UserApi extends BaseApi {
   UserApi({super.client});
 
   Future<List<UserResponse>> getUsersList() async {
-    final Uri uri = getUri(usersListEndpoint);
+    final Uri uri = getUri(userApiEndpoint);
 
     final request = client.get(
       uri,
@@ -23,8 +23,33 @@ class UserApi extends BaseApi {
     return users;
   }
 
+  Future<bool> updateUser(UserResponse user) async {
+    final int userId = user.userId;
+    final Uri uri = getUri('$userApiEndpoint/$userId');
+
+    final body = jsonEncode({
+      "name": user.userName,
+      "email": user.userEmail,
+      "gender": user.userGender.name,
+      "status": user.userStatus.name
+    });
+
+    final request = client.put(
+      uri,
+      headers: super.getHeaders(),
+      body: body,
+    );
+
+    final response = await send(request);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   Future<bool> addUser(UserResponse user) async {
-    final Uri uri = getUri(addUserEndpoint);
+    final Uri uri = getUri(userApiEndpoint);
 
     final body = jsonEncode({
       "name": user.userName,
