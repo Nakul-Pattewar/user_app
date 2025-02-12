@@ -104,16 +104,15 @@ class UserTile extends StatelessWidget {
               options: {
                 DialogAction.edit: () {
                   showCustomDialog(
+                    user: user,
                     action: DialogAction.edit,
                     context: context,
-                    user: user,
                   );
                 },
                 DialogAction.delete: () {
                   showCustomDialog(
                     action: DialogAction.delete,
                     context: context,
-                    user: user,
                   );
                 },
               },

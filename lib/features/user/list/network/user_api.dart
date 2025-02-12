@@ -10,7 +10,10 @@ class UserApi extends BaseApi {
   Future<List<UserResponse>> getUsersList() async {
     final Uri uri = getUri(usersListEndpoint);
 
-    final request = client.get(uri);
+    final request = client.get(
+      uri,
+      headers: super.getHeaders(),
+    );
 
     final response = await send(request);
     List<dynamic> jsonList = json.decode(response.body);

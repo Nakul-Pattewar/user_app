@@ -4,10 +4,10 @@ import '../../../../common/constants/enums.dart';
 
 class UserResponse {
   final int userId;
-  final String userName;
-  final Gender userGender;
-  final String userEmail;
-  final Status userStatus;
+  late final String userName;
+  late final Gender userGender;
+  late final String userEmail;
+  late final Status userStatus;
 
   UserResponse({
     required this.userName,
