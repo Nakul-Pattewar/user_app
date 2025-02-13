@@ -8,12 +8,14 @@ import 'package:user_app/features/user/list/network/user_response.dart';
 import '../../list/network/user_api.dart';
 
 class EditUserCubit extends Cubit<UiState<bool>> {
-  EditUserCubit() : super(Default());
+  final UserApi userApi;
+
+  EditUserCubit(this.userApi) : super(Default());
 
   FutureOr<void> updateUser(UserResponse user) async {
     emit(Loading());
     try {
-      final apiResponse = await UserApi().updateUser(user);
+      final apiResponse = await userApi.updateUser(user);
       if (apiResponse) {
         emit(Success<bool>(apiResponse));
       } else {
