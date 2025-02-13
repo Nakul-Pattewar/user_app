@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_app/Routes/route_generator.dart';
+import 'package:user_app/features/user/list/network/user_api.dart';
 
 import 'features/user/list/bloc/user_cubit.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit(),
+      create: (context) => UserCubit(UserApi()),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'User App',
