@@ -115,7 +115,8 @@ void main() {
         "Given user api response,"
         "When get call occurs,"
         "Then should return list with all users", () async {
-      when(() => mockClient.get(any(), headers: headers)).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response(json, 200),
       );
 
@@ -127,7 +128,8 @@ void main() {
         "Given empty user API response, "
         "when GET call occurs, "
         "then should return an empty list", () async {
-      when(() => mockClient.get(any(), headers: headers)).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response(jsonEncode([]).toString(), 200),
       );
 
@@ -139,7 +141,8 @@ void main() {
         "Given manipulated JSON, "
         "when GET call occurs, "
         "then should throw FormatException", () async {
-      when(() => mockClient.get(any(), headers: headers)).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response("{manipulated_json}", 200),
       );
 
@@ -150,7 +153,7 @@ void main() {
         "Given API error response, "
         "when GET call occurs, "
         "then should throw Exception", () async {
-      when(() => mockClient.get(any(), headers: headers))
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
           .thenThrow(Exception());
 
       expect(
@@ -161,7 +164,8 @@ void main() {
         "Given null response body, "
         "when GET call occurs, "
         "then should throw FormatException", () async {
-      when(() => mockClient.get(any(), headers: headers)).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response("", 200),
       );
 
@@ -182,7 +186,8 @@ void main() {
         }
       ]);
 
-      when(() => mockClient.get(any(), headers: headers)).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response(invalidJson, 200),
       );
 
