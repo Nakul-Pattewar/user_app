@@ -20,15 +20,13 @@ class AddUserButton extends StatelessWidget {
         },
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // Small circular edges
+            borderRadius: BorderRadius.circular(8),
           ),
-          padding: const EdgeInsets.symmetric(
-              horizontal: 10, vertical: 10), // Button padding
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         ),
         child: const Text(
           addUserButtonTitle,
-          style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.bold), // Styling text
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ),
     );

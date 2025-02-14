@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_app/features/user/list/network/user_api.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 import '../../../../common/constants/enums.dart';
 import '../../../../common/constants/strings.dart';
@@ -44,7 +45,7 @@ class AddUserDialogState extends State<AddUserDialog> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AddUserCubit(),
+      create: (context) => AddUserCubit(UserApi()),
       child: BlocConsumer<AddUserCubit, UiState<bool>>(
         builder: (context, state) {
           if (state is Default || state is Loading || state is Error) {
