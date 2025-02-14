@@ -1,5 +1,5 @@
-enum Gender { male, female }
+enum Gender { male, female, undefined }
 
-enum Status { active, inactive }
+enum Status { active, inactive, undefined }
 
-enum PopupOptions { edit, delete }
+enum DialogAction { edit, delete, undefined }

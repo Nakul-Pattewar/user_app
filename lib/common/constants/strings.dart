@@ -1,12 +1,31 @@
 const String listPageTitle = 'Users list';
-const String errorPageTitle = 'Users list';
+const String errorPageTitle = 'Error';
 const String usersListErrorMessage = 'Error occurred while loading data...';
 const String noUsersTextMessage = 'No users found';
 const String usersListFilePath = 'assets/users_list.json';
 const String gorestBaseUrl = 'https://gorest.co.in';
-const String usersListEndpoint = '/public/v2/users';
+const String userApiEndpoint = '/public/v2/users';
 const String clientErrorMessage = 'Client Error';
 const String serverErrorMessage = 'Server Error';
 const String unexpectedErrorMessage = 'Unexpected Error';
 const String noInternetErrorMessage =
     'No internet connection. Please check your connection and try again.';
+const String editUserDialogTitle = 'Edit User';
+const String editUserDialogNameTextFieldTitle = 'Name';
+const String editUserDialogEmailTextFieldTitle = 'Email';
+const String editUserDialogGenderLabel = 'Gender';
+const String editUserDialogStatusLabel = 'Status';
+const String editUserDialogCancelButtonText = 'Cancel';
+const String editUserDialogSaveAndCloseButtonText = 'Save & Close';
+const String maleGender = 'male';
+const String femaleGender = 'female';
+const String activeStatus = 'active';
+const String inactiveStatus = 'inactive';
+const String userDialogEditOptionText = 'edit';
+const String userDialogDeleteOptionText = 'delete';
+const String emailInvalidErrorText = "Enter a valid email";
+const String emailEmptyErrorText = "Email can't be empty";
+const String nameEmptyErrorText = "Name can't be empty";
+const String userUpdateSuccessMessage = "User updated successfully !";
+const String gorestApiAuthToken =
+    "734ce94f88ee76507b1caf4ff56f452bb5dd4c0ef5427682cbba0fca9dda8c40";

@@ -1,34 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:user_app/common/utils/show_custom_dialog.dart';
 import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_widget.dart';
+import 'package:user_app/features/user/list/network/user_response.dart';
 
 import '../../../../common/constants/enums.dart';
+import '../../../../common/utils/utils.dart';
 
 class UserTile extends StatelessWidget {
-  const UserTile(
-      {super.key,
-      required this.userGender,
-      required this.userName,
-      required this.userEmail,
-      required this.userStatus});
+  const UserTile({
+    super.key,
+    required this.user,
+  });
 
-  final String userName;
-  final String userGender;
-  final String userEmail;
-  final String userStatus;
-
-  String getUserNameInitials(String name) {
-    List<String> nameParts = name.trim().split(' ');
-    String initials = '';
-
-    for (int i = 0; i < nameParts.length && i < 2; i++) {
-      if (nameParts[i].isNotEmpty) {
-        initials += nameParts[i][0].toUpperCase();
-      }
-    }
-
-    return initials;
-  }
+  final UserResponse user;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +33,7 @@ class UserTile extends StatelessWidget {
               ),
               alignment: Alignment.center,
               child: Text(
-                getUserNameInitials(userName),
+                getUserNameInitials(user.userName),
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: 24,
@@ -69,7 +54,7 @@ class UserTile extends StatelessWidget {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 230),
                       child: Text(
-                        userName,
+                        user.userName,
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 18,
@@ -84,7 +69,7 @@ class UserTile extends StatelessWidget {
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 230),
                       child: Text(
-                        userEmail,
+                        user.userEmail,
                         style: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 14,
@@ -95,7 +80,7 @@ class UserTile extends StatelessWidget {
                     ),
                   ),
                   UserStatusWidget(
-                    userStatus: userStatus,
+                    userStatus: user.userStatus,
                   ),
                 ],
               ),
@@ -107,8 +92,8 @@ class UserTile extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(5, 2, 5, 2),
               child: Icon(
                   size: 30,
-                  userGender == Gender.male.name ? Icons.male : Icons.female,
-                  color: userGender == Gender.male.name
+                  user.userGender == Gender.male ? Icons.male : Icons.female,
+                  color: user.userGender == Gender.male
                       ? Colors.blueAccent
                       : Colors.pinkAccent),
             ),
@@ -117,8 +102,20 @@ class UserTile extends StatelessWidget {
             flex: 2,
             child: PopupOptionsButton(
               options: {
-                PopupOptions.edit.name: () {},
-                PopupOptions.delete.name: () {},
+                DialogAction.edit: () {
+                  showCustomDialog(
+                    action: DialogAction.edit,
+                    context: context,
+                    user: user,
+                  );
+                },
+                DialogAction.delete: () {
+                  showCustomDialog(
+                    action: DialogAction.delete,
+                    context: context,
+                    user: user,
+                  );
+                },
               },
             ),
           ),
