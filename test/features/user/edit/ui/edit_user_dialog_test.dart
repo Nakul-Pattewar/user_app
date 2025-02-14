@@ -14,7 +14,7 @@ class MockEditUserCubit extends MockCubit<UiState<bool>>
 
 late EditUserCubit _editUserCubit;
 
-Future<void> _BuildDialog(
+Future<void> _buildDialog(
     {required WidgetTester tester, required UserResponse mockUser}) async {
   await tester.pumpWidget(
     MaterialApp(
@@ -60,7 +60,7 @@ void main() {
         'Given mockUser, '
         'When User open edit dialog,'
         'Then should render widget correctly', (WidgetTester tester) async {
-      await _BuildDialog(tester: tester, mockUser: mockUser);
+      await _buildDialog(tester: tester, mockUser: mockUser);
 
       expect(find.text('Nakul Pattewar'), findsOneWidget);
       expect(find.text('pattewarnakul@gmail.com'), findsOneWidget);
@@ -75,7 +75,7 @@ void main() {
         'When User tap on radio and elevated buttons in dialog, '
         'Then should tap correctly on buttons and update respective values correctly',
         (WidgetTester tester) async {
-      await _BuildDialog(tester: tester, mockUser: mockUser);
+      await _buildDialog(tester: tester, mockUser: mockUser);
 
       await tester.tap(find.text('female'));
       await tester.pumpAndSettle();
@@ -94,7 +94,7 @@ void main() {
         'Given mock user, '
         'When user clicks on cancel button, '
         'Should close the dialog', (WidgetTester tester) async {
-      await _BuildDialog(tester: tester, mockUser: mockUser);
+      await _buildDialog(tester: tester, mockUser: mockUser);
 
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();
