@@ -47,7 +47,7 @@ class UserApi extends BaseApi {
       return false;
     }
   }
-
+  
   Future<bool> addUser(UserResponse user) async {
     final Uri uri = getUri(userApiEndpoint);
 
