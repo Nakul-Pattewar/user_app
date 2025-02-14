@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:mocktail/mocktail.dart';
+import 'package:user_app/common/constants/strings.dart';
 import 'package:user_app/features/user/list/network/user_api.dart';
 
 class MockClient extends Mock implements http.Client {}
@@ -12,6 +12,7 @@ void main() {
   late MockClient mockClient;
   late String json;
   late UserApi userApi;
+  late Map<String, String> headers;
 
   setUpAll(() async {
     registerFallbackValue(Uri());
@@ -103,6 +104,10 @@ void main() {
         "status": "active"
       }
     ]).toString();
+    headers = {
+      "Authorization": "Bearer $gorestApiAuthToken",
+      "Content-Type": "application/json"
+    };
   });
 
   group("tests for UserApi", () {
@@ -110,7 +115,8 @@ void main() {
         "Given user api response,"
         "When get call occurs,"
         "Then should return list with all users", () async {
-      when(() => mockClient.get(any())).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response(json, 200),
       );
 
@@ -122,7 +128,8 @@ void main() {
         "Given empty user API response, "
         "when GET call occurs, "
         "then should return an empty list", () async {
-      when(() => mockClient.get(any())).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response(jsonEncode([]).toString(), 200),
       );
 
@@ -134,7 +141,8 @@ void main() {
         "Given manipulated JSON, "
         "when GET call occurs, "
         "then should throw FormatException", () async {
-      when(() => mockClient.get(any())).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response("{manipulated_json}", 200),
       );
 
@@ -145,7 +153,8 @@ void main() {
         "Given API error response, "
         "when GET call occurs, "
         "then should throw Exception", () async {
-      when(() => mockClient.get(any())).thenThrow(Exception());
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenThrow(Exception());
 
       expect(
           () async => await userApi.getUsersList(), throwsA(isA<Exception>()));
@@ -155,7 +164,8 @@ void main() {
         "Given null response body, "
         "when GET call occurs, "
         "then should throw FormatException", () async {
-      when(() => mockClient.get(any())).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response("", 200),
       );
 
@@ -176,7 +186,8 @@ void main() {
         }
       ]);
 
-      when(() => mockClient.get(any())).thenAnswer(
+      when(() => mockClient.get(any(), headers: any(named: 'headers')))
+          .thenAnswer(
         (_) async => http.Response(invalidJson, 200),
       );
 

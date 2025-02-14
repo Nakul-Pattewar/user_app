@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_app/features/user/edit/bloc/edit_user_cubit.dart';
+import 'package:user_app/features/user/list/network/user_api.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 import '../../../../common/constants/enums.dart';
 import '../../../../common/constants/strings.dart';
@@ -46,7 +47,7 @@ class EditUserDialogState extends State<EditUserDialog> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EditUserCubit(),
+      create: (context) => EditUserCubit(UserApi()),
       child: BlocConsumer<EditUserCubit, UiState<bool>>(
         builder: (context, state) {
           if (state is Success) {
