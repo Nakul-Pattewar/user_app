@@ -36,7 +36,7 @@ class BaseApi {
       Future<http_client.Response> request) async {
     try {
       final response = await request;
-      if (response.statusCode != 200) _handleError(response);
+      if (response.statusCode >= 300) _handleError(response);
       return response;
     } on SocketException catch (_) {
       throw noInternetErrorMessage;

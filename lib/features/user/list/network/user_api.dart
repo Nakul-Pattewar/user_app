@@ -47,4 +47,20 @@ class UserApi extends BaseApi {
       return false;
     }
   }
+
+  Future<bool> deleteUser(int userId) async {
+    final Uri uri = getUri('$userApiEndpoint/$userId');
+
+    final request = client.delete(
+      uri,
+      headers: super.getHeaders(),
+    );
+
+    final response = await send(request);
+    if (response.statusCode == 204) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
