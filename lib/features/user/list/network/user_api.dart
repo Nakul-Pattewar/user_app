@@ -63,4 +63,28 @@ class UserApi extends BaseApi {
       return false;
     }
   }
+      
+  Future<bool> addUser(UserResponse user) async {
+    final Uri uri = getUri(userApiEndpoint);
+
+    final body = jsonEncode({
+      "name": user.userName,
+      "email": user.userEmail,
+      "gender": user.userGender.name,
+      "status": user.userStatus.name
+    });
+
+    final request = client.post(
+      uri,
+      headers: super.getHeaders(),
+      body: body,
+    );
+
+    final response = await send(request);
+    if (response.statusCode < 300) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'package:http/http.dart';
+
 class UiState<T> {
   const UiState();
 

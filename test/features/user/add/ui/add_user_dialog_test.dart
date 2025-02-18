@@ -5,17 +5,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:user_app/common/constants/enums.dart';
 import 'package:user_app/common/state/ui_state.dart';
-import 'package:user_app/features/user/edit/bloc/edit_user_cubit.dart';
-import 'package:user_app/features/user/edit/ui/edit_user_dialog.dart';
+import 'package:user_app/features/user/add/bloc/add_user_cubit.dart';
+import 'package:user_app/features/user/add/ui/add_user_dialog.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 
 class MockEditUserCubit extends MockCubit<UiState<bool>>
-    implements EditUserCubit {}
+    implements AddUserCubit {}
 
-late EditUserCubit _editUserCubit;
+late AddUserCubit _addUserCubit;
 
-Future<void> _buildDialog(
-    {required WidgetTester tester, required UserResponse mockUser}) async {
+Future<void> _buildDialog({required WidgetTester tester}) async {
   await tester.pumpWidget(
     MaterialApp(
       home: Scaffold(
@@ -24,46 +23,36 @@ Future<void> _buildDialog(
             onPressed: () => showDialog(
               context: context,
               builder: (_) => BlocProvider(
-                create: (_) => _editUserCubit,
-                child: EditUserDialog(user: mockUser),
+                create: (_) => _addUserCubit,
+                child: AddUserDialog(),
               ),
             ),
-            child: Text('Open Dialog'),
+            child: Text('Add User'),
           ),
         ),
       ),
     ),
   );
 
-  await tester.tap(find.text('Open Dialog'));
+  await tester.tap(find.text('Add User'));
   await tester.pumpAndSettle();
 }
 
 void main() {
-  group('tests for Edit user dialog', () {
-    late UserResponse mockUser;
-
+  group('tests for Add user dialog', () {
     setUp(() {
-      mockUser = UserResponse(
-        userId: 12345,
-        userName: 'Nakul Pattewar',
-        userGender: Gender.male,
-        userEmail: 'pattewarnakul@gmail.com',
-        userStatus: Status.active,
-      );
-      _editUserCubit = MockEditUserCubit();
+      _addUserCubit = MockEditUserCubit();
 
-      when(() => _editUserCubit.state).thenReturn(Success(true));
+      when(() => _addUserCubit.state).thenReturn(Success(true));
     });
 
     testWidgets(
-        'Given mockUser, '
-        'When User open edit dialog,'
+        'Given none, '
+        'When User open AddUserDialog,'
         'Then should render widget correctly', (WidgetTester tester) async {
-      await _buildDialog(tester: tester, mockUser: mockUser);
+      await _buildDialog(tester: tester);
 
-      expect(find.text('Nakul Pattewar'), findsOneWidget);
-      expect(find.text('pattewarnakul@gmail.com'), findsOneWidget);
+      expect(find.text(''), findsNWidgets(2));
       expect(find.text('male'), findsOneWidget);
       expect(find.text('female'), findsOneWidget);
       expect(find.text('active'), findsOneWidget);
@@ -71,11 +60,11 @@ void main() {
     });
 
     testWidgets(
-        'Given mock user,'
+        'Given none,'
         'When User tap on radio and elevated buttons in dialog, '
         'Then should tap correctly on buttons and update respective values correctly',
         (WidgetTester tester) async {
-      await _buildDialog(tester: tester, mockUser: mockUser);
+      await _buildDialog(tester: tester);
 
       await tester.tap(find.text('female'));
       await tester.pumpAndSettle();
@@ -91,10 +80,10 @@ void main() {
     });
 
     testWidgets(
-        'Given mock user, '
+        'Given none, '
         'When user clicks on cancel button, '
         'Should close the dialog', (WidgetTester tester) async {
-      await _buildDialog(tester: tester, mockUser: mockUser);
+      await _buildDialog(tester: tester);
 
       await tester.tap(find.text('Cancel'));
       await tester.pumpAndSettle();

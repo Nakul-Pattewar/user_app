@@ -23,6 +23,8 @@ class BaseApi {
 
   void _handleError(http_client.Response response) {
     switch (response.statusCode) {
+      case (422):
+        throw userAlreadyExistsErrorMessage;
       case (>= 400 && < 500):
         throw '$clientErrorMessage (${response.statusCode})';
       case (>= 500):
