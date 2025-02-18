@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:user_app/Routes/route_generator.dart';
 import 'package:user_app/features/user/list/network/user_api.dart';
 
+import 'features/user/favorite/bloc/favorites_provider.dart';
 import 'features/user/list/bloc/user_cubit.dart';
 
 void main() {
@@ -14,17 +16,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => UserCubit(UserApi()),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'User App',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
-          useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
+      ],
+      child: BlocProvider(
+        create: (context) => UserCubit(UserApi()),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'User App',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
+            useMaterial3: true,
+          ),
+          initialRoute: "/",
+          onGenerateRoute: RouteGenerator.generateRoute,
         ),
-        initialRoute: "/",
-        onGenerateRoute: RouteGenerator.generateRoute,
       ),
     );
   }

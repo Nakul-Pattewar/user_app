@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_app/features/user/add/ui/add_user_button.dart';
+import 'package:user_app/features/user/favorite/bloc/favorites_provider.dart';
 import 'package:user_app/features/user/list/bloc/user_cubit.dart';
 import 'package:user_app/features/user/list/network/user_api.dart';
 import 'package:user_app/features/user/list/ui/user_tile.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../common/constants/strings.dart';
 import '../../../../common/state/ui_state.dart';
@@ -16,6 +18,7 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favoriteProvider = Provider.of<FavoritesProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -33,6 +36,13 @@ class UserList extends StatelessWidget {
         ),
         actions: [
           const AddUserButton(),
+          IconButton(
+            icon: Icon(
+              Icons.favorite,
+              color: favoriteProvider.showFavorites ? Colors.pink : Colors.grey,
+            ),
+            onPressed: () => favoriteProvider.toggleShowFavorites(),
+          ),
         ],
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
@@ -47,7 +57,13 @@ class UserList extends StatelessWidget {
               ),
             );
           } else if (state is Success) {
-            List<UserResponse>? users = state.getData();
+            List<UserResponse>? users = favoriteProvider.showFavorites
+                ? state
+                    .getData()
+                    ?.where((user) =>
+                        favoriteProvider.favoriteUserIds.contains(user.userId))
+                    .toList()
+                : state.getData();
             if (users!.isEmpty) {
               return Center(
                 child: Text(noUsersTextMessage),
