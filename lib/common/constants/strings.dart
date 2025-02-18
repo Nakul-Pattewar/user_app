@@ -11,6 +11,15 @@ const String unexpectedErrorMessage = 'Unexpected Error';
 const String noInternetErrorMessage =
     'No internet connection. Please check your connection and try again.';
 const String editUserDialogTitle = 'Edit User';
+const String deleteUserDialogTitle = 'Delete User';
+const String editUserDialogNameTextFieldTitle = 'Name';
+const String editUserDialogEmailTextFieldTitle = 'Email';
+const String editUserDialogGenderLabel = 'Gender';
+const String editUserDialogStatusLabel = 'Status';
+const String editUserDialogCancelButtonText = 'Cancel';
+const String editUserDialogSaveAndCloseButtonText = 'Save & Close';
+const String deleteButtonText = 'Delete';
+const String confirmDeleteText = 'Do you want to delete ';
 const String addUserDialogTitle = 'Add User';
 const String userDialogNameTextFieldTitle = 'Name';
 const String userDialogEmailTextFieldTitle = 'Email';
@@ -28,6 +37,7 @@ const String emailInvalidErrorText = "Enter a valid email";
 const String emailEmptyErrorText = "Email can't be empty";
 const String nameEmptyErrorText = "Name can't be empty";
 const String userUpdateSuccessMessage = "User updated successfully !";
+const String userDeleteSuccessMessage = "User deleted successfully !";
 const String gorestApiAuthToken =
     "734ce94f88ee76507b1caf4ff56f452bb5dd4c0ef5427682cbba0fca9dda8c40";
 const String userAddedSuccessMessage = "User Added Successfully !!";
