@@ -111,6 +111,7 @@ class UserTile extends StatelessWidget {
                 },
                 DialogAction.delete: () {
                   showCustomDialog(
+                    user: user,
                     action: DialogAction.delete,
                     context: context,
                   );

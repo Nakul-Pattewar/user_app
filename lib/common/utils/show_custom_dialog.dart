@@ -5,7 +5,6 @@ import 'package:user_app/features/user/delete/ui/delete_user_dialog.dart';
 import '../../features/user/add/ui/add_user_dialog.dart';
 import '../../features/user/edit/ui/edit_user_dialog.dart';
 import '../../features/user/list/network/user_response.dart';
-import '../constants/enums.dart';
 
 void showCustomDialog({
   UserResponse? user,
@@ -24,12 +23,16 @@ void showCustomDialog({
       }
       break;
     case DialogAction.delete:
-      showDialog(
-        context: context,
-        builder: (context) => DeleteUserDialog(
-          user: user,
-        ),,
-      );
+      if (user != null) {
+        showDialog(
+          context: context,
+          builder: (context) => DeleteUserDialog(
+            user: user,
+          ),
+        );
+      } else {
+        throw ArgumentError("User is required for deleting.");
+      }
       break;
     case DialogAction.add:
       showDialog(
