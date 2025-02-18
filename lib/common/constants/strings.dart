@@ -11,12 +11,13 @@ const String unexpectedErrorMessage = 'Unexpected Error';
 const String noInternetErrorMessage =
     'No internet connection. Please check your connection and try again.';
 const String editUserDialogTitle = 'Edit User';
-const String editUserDialogNameTextFieldTitle = 'Name';
-const String editUserDialogEmailTextFieldTitle = 'Email';
-const String editUserDialogGenderLabel = 'Gender';
-const String editUserDialogStatusLabel = 'Status';
-const String editUserDialogCancelButtonText = 'Cancel';
-const String editUserDialogSaveAndCloseButtonText = 'Save & Close';
+const String addUserDialogTitle = 'Add User';
+const String userDialogNameTextFieldTitle = 'Name';
+const String userDialogEmailTextFieldTitle = 'Email';
+const String userDialogGenderLabel = 'Gender';
+const String userDialogStatusLabel = 'Status';
+const String userDialogCancelButtonText = 'Cancel';
+const String userDialogSaveAndCloseButtonText = 'Save & Close';
 const String maleGender = 'male';
 const String femaleGender = 'female';
 const String activeStatus = 'active';
@@ -29,3 +30,6 @@ const String nameEmptyErrorText = "Name can't be empty";
 const String userUpdateSuccessMessage = "User updated successfully !";
 const String gorestApiAuthToken =
     "734ce94f88ee76507b1caf4ff56f452bb5dd4c0ef5427682cbba0fca9dda8c40";
+const String userAddedSuccessMessage = "User Added Successfully !!";
+const String userAlreadyExistsErrorMessage = "User already exists";
+const String addUserButtonTitle = "Add User";

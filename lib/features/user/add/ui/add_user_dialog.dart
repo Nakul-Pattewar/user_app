@@ -1,46 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:user_app/common/widgets/user_dialog.dart';
-import 'package:user_app/features/user/edit/bloc/edit_user_cubit.dart';
 import 'package:user_app/features/user/list/network/user_api.dart';
-import 'package:user_app/features/user/list/network/user_response.dart';
 import '../../../../common/constants/enums.dart';
 import '../../../../common/constants/strings.dart';
 import '../../../../common/state/ui_state.dart';
 import '../../list/bloc/user_cubit.dart';
+import '../bloc/add_user_cubit.dart';
 
-class EditUserDialog extends StatefulWidget {
-  final UserResponse user;
-
-  const EditUserDialog({
+class AddUserDialog extends StatefulWidget {
+  const AddUserDialog({
     super.key,
-    required this.user,
   });
 
   @override
-  EditUserDialogState createState() => EditUserDialogState();
+  AddUserDialogState createState() => AddUserDialogState();
 }
 
-class EditUserDialogState extends State<EditUserDialog> {
-  late UserResponse user = widget.user;
-  late TextEditingController nameController =
-      TextEditingController(text: user.userName);
-  late TextEditingController emailController =
-      TextEditingController(text: user.userEmail);
+class AddUserDialogState extends State<AddUserDialog> {
+  late Gender gender = Gender.undefined;
+  late Status status = Status.undefined;
+  late String name = '';
+  late String email = '';
+  late TextEditingController nameController = TextEditingController(text: '');
+  late TextEditingController emailController = TextEditingController(text: '');
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EditUserCubit(UserApi()),
-      child: BlocConsumer<EditUserCubit, UiState<bool>>(
+      create: (context) => AddUserCubit(UserApi()),
+      child: BlocConsumer<AddUserCubit, UiState<bool>>(
         builder: (context, state) {
           if (state is Success) {
             return SizedBox.shrink();
           } else {
             return UserDialog(
-              action: DialogAction.edit,
+              action: DialogAction.add,
               state: state,
-              user: user,
             );
           }
         },
@@ -64,7 +60,7 @@ class EditUserDialogState extends State<EditUserDialog> {
                       child: Text(
                         (state is Error)
                             ? unexpectedErrorMessage
-                            : userUpdateSuccessMessage,
+                            : userAddedSuccessMessage,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 16,

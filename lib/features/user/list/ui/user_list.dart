@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_app/features/user/add/ui/add_user_button.dart';
 import 'package:user_app/features/user/list/bloc/user_cubit.dart';
 import 'package:user_app/features/user/list/network/user_api.dart';
 import 'package:user_app/features/user/list/ui/user_tile.dart';
@@ -30,6 +31,9 @@ class UserList extends StatelessWidget {
             ),
           ),
         ),
+        actions: [
+          const AddUserButton(),
+        ],
         backgroundColor: Colors.white,
         shadowColor: Colors.white,
         surfaceTintColor: Colors.white,

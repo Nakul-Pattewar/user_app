@@ -23,6 +23,8 @@ class BaseApi {
 
   void _handleError(http_client.Response response) {
     switch (response.statusCode) {
+      case (422):
+        throw userAlreadyExistsErrorMessage;
       case (>= 400 && < 500):
         throw '$clientErrorMessage (${response.statusCode})';
       case (>= 500):
@@ -36,7 +38,7 @@ class BaseApi {
       Future<http_client.Response> request) async {
     try {
       final response = await request;
-      if (response.statusCode != 200) _handleError(response);
+      if (response.statusCode >= 300) _handleError(response);
       return response;
     } on SocketException catch (_) {
       throw noInternetErrorMessage;
