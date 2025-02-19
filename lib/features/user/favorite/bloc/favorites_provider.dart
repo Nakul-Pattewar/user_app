@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class FavoritesProvider extends ChangeNotifier {
-  final Set<int> favoriteUserIds = {};
+  final List<int> favoriteUserIds = [];
   bool showFavorites = false;
 
   FavoritesProvider() {

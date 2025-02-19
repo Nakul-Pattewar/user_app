@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:provider/provider.dart';
 import 'package:user_app/common/constants/enums.dart';
 import 'package:user_app/common/constants/strings.dart';
 import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_widget.dart';
+import 'package:user_app/features/user/favorite/bloc/favorites_provider.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 import 'package:user_app/features/user/list/ui/user_tile.dart';
 
@@ -26,10 +28,15 @@ void main() {
         'when UserTile widget rendered,'
         'then should render widget correctly', (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: UserTile(
-              user: mockUser,
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<FavoritesProvider>(
+              create: (_) => FavoritesProvider(),
+            ),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: UserTile(user: mockUser),
             ),
           ),
         ),
@@ -52,9 +59,16 @@ void main() {
         'then should return popup options correctly',
         (WidgetTester tester) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(
-            body: UserTile(user: mockUser),
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<FavoritesProvider>(
+              create: (_) => FavoritesProvider(),
+            ),
+          ],
+          child: MaterialApp(
+            home: Scaffold(
+              body: UserTile(user: mockUser),
+            ),
           ),
         ),
       );
