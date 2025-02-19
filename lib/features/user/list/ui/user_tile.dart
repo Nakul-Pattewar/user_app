@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:user_app/common/utils/show_custom_dialog.dart';
 import 'package:user_app/common/widgets/popup_options_button.dart';
 import 'package:user_app/common/widgets/user_status_widget.dart';
+import 'package:user_app/features/user/favorite/bloc/favorites_provider.dart';
 import 'package:user_app/features/user/list/network/user_response.dart';
 
 import '../../../../common/constants/enums.dart';
@@ -17,6 +19,9 @@ class UserTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final favoriteProvider = Provider.of<FavoritesProvider>(context);
+    final isFavorite = favoriteProvider.favoriteUserIds.contains(user.userId);
+
     return Container(
       padding: EdgeInsets.fromLTRB(2, 4, 2, 4),
       margin: EdgeInsets.fromLTRB(2, 4, 2, 4),
@@ -97,6 +102,13 @@ class UserTile extends StatelessWidget {
                       ? Colors.blueAccent
                       : Colors.pinkAccent),
             ),
+          ),
+          IconButton(
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: isFavorite ? Colors.pink : Colors.pink,
+            ),
+            onPressed: () => favoriteProvider.toggleFavorite(user.userId),
           ),
           Expanded(
             flex: 2,
